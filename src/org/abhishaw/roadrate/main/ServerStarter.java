@@ -1,0 +1,55 @@
+package org.abhishaw.roadrate.main;
+
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+public class ServerStarter {
+	final private int portNumber = 5001;
+	private ServerSocket serverSocket;
+
+	private ServerStarter() throws IOException {
+		serverSocket = new ServerSocket(portNumber);
+	}
+
+	private ClientRequest listen() throws IOException {
+		try {
+			System.out.println("listening for request.....");
+			Socket clientSocket = serverSocket.accept();
+			ClientRequest client = new ClientRequest(clientSocket);
+			return client;
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw e;
+		}
+	}
+
+	public static void main(String[] args) throws IOException {
+		ServerStarter localServer = new ServerStarter();
+		try {
+			while (true) {
+				ClientRequest temp;
+				try {
+					temp = localServer.listen();
+					new Thread(temp).start();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		} finally {
+			localServer.close();
+		}
+	}
+
+	private void close(){
+		try {
+			serverSocket.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+}
