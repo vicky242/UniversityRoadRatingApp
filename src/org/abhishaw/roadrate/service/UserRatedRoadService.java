@@ -27,7 +27,7 @@ public class UserRatedRoadService implements ServiceInterface{
 			roadListBuilder
 					.add(Json.createObjectBuilder().add(Bytes.toString(road), Bytes.toString(columnFamily.get(road))));
 		}
-		JsonObject reply = Json.createObjectBuilder().add("RequestReply", "Successfull")
+		JsonObject reply = Json.createObjectBuilder().add("RequestReply", "Successful")
 				.add("ListOfRoads", roadListBuilder).build();
 		return reply;
 

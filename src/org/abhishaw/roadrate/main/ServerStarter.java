@@ -4,7 +4,11 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class ServerStarter {
+	private static final Logger logger = LogManager.getLogger(ServerStarter.class.getName());
 	final private int portNumber = 5001;
 	private ServerSocket serverSocket;
 
@@ -20,7 +24,6 @@ public class ServerStarter {
 			return client;
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			throw e;
 		}
@@ -35,7 +38,6 @@ public class ServerStarter {
 					temp = localServer.listen();
 					new Thread(temp).start();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -48,7 +50,6 @@ public class ServerStarter {
 		try {
 			serverSocket.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

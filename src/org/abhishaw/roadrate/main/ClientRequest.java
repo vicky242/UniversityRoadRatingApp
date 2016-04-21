@@ -37,7 +37,7 @@ public class ClientRequest implements Runnable {
 		try {
 			reply = service.processRequest(jsonObject.getJsonObject("RequestDetails"));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			reply = Json.createObjectBuilder().add("RequestReply", "ServerError").build();
 			e.printStackTrace();
 		}
 		try {
