@@ -13,7 +13,7 @@ public class Tester {
 	public static void main(String[] args) throws IOException, ClassNotFoundException {
 		
 
-		Socket socket = new Socket("localhost", 5001);
+		Socket socket = new Socket("localhost", 5555);
 		JsonObject jsonObject = Json.createObjectBuilder().add("RequestType", "RatingRoad")
 				.add("RequestDetails",
 						Json.createObjectBuilder().add("UserId", "abhishaw").add("RoadId", "234").add("Rating", "8"))

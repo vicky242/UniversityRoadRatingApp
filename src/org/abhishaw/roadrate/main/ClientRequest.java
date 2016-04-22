@@ -22,6 +22,7 @@ public class ClientRequest implements Runnable {
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
+		System.out.println("One request came");
 		JsonReader jsRdr;
 		try {
 			jsRdr = Json.createReader(clientSocket.getInputStream());
@@ -31,6 +32,7 @@ public class ClientRequest implements Runnable {
 			return;
 		}
 		JsonObject jsonObject = jsRdr.readObject(), reply = null;
+		System.out.println(jsonObject);
 		String requestType = jsonObject.getString("RequestType");
 		ServiceInterface service = ServiceFactory.getService(requestType);
 

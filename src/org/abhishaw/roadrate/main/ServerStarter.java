@@ -4,12 +4,9 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 public class ServerStarter {
-	private static final Logger logger = LogManager.getLogger(ServerStarter.class.getName());
-	final private int portNumber = 5001;
+	//private static final Logger logger = LogManager.getLogger(ServerStarter.class.getName());
+	final private int portNumber = 5555;
 	private ServerSocket serverSocket;
 
 	private ServerStarter() throws IOException {
