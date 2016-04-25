@@ -1,4 +1,4 @@
-package org.abhishaw.roadrate.mapreducejobs.userweightagecalculator;
+package org.abhishaw.roadrate.mapreducejobs.user.weightagecalculator;
 
 import java.io.IOException;
 import java.util.NavigableMap;
@@ -19,22 +19,6 @@ public class UserWeightageCalculatorMapper {
 
 		public void map(ImmutableBytesWritable row, Result value, Context context)
 				throws IOException, InterruptedException {
-			/*
-			 * long start = System.currentTimeMillis(); List<Double> list = new
-			 * ArrayList<Double>(); NavigableMap<byte[], byte[]> nm =
-			 * value.getFamilyMap(Bytes.toBytes( "RoadRating"));
-			 * System.out.print(Bytes.toString(row. get()) ); for (byte[] key :
-			 * nm.keySet()) { list.add(new Double(100 -
-			 * getReductionPercentage(key, nm.get(key)))); }
-			 * Collections.sort(list); double weightage = 0; for (Double decPer
-			 * : list) { weightage += decPer / 100; } weightage = 10 *
-			 * (list.size() > 0 ? weightage / list.size() : 1);
-			 * System.out.println(" Wieghtage: " + weightage); Put put = new
-			 * Put(row.get()); put.add(Bytes.toBytes( "PersonalInformation"),
-			 * Bytes.toBytes("Weightage"), Bytes.toBytes(weightage));
-			 * context.write(row, put); System.out.println((System.
-			 * currentTimeMillis() - start) / 1000);
-			 */
 			System.out.println("new Mapper for " + Bytes.toString(row.get()));
 			NavigableMap<byte[], byte[]> nm = value.getFamilyMap(Bytes.toBytes("UserRating"));
 			for (byte[] key : nm.keySet()) {
@@ -42,18 +26,9 @@ public class UserWeightageCalculatorMapper {
 						new DoubleWritable(Math
 								.abs(Bytes.toDouble(value.getValue(Bytes.toBytes("Summary"), Bytes.toBytes("Average")))
 										- Double.parseDouble(Bytes.toString(nm.get(key))))));
-				System.out.println(
-						Bytes.toString(key) + " road: " + Bytes.toString(row.get()) + " rating: " + Double.parseDouble(Bytes.toString(nm.get(key))));
+				System.out.println(Bytes.toString(key) + " road: " + Bytes.toString(row.get()) + " rating: "
+						+ Double.parseDouble(Bytes.toString(nm.get(key))));
 			}
-		}
-
-		@SuppressWarnings("unused")
-		private Double getReductionPercentage(byte[] key, byte[] bs) throws IOException {
-			Get get = new Get(key);
-			get.addColumn(Bytes.toBytes("Summary"), Bytes.toBytes("Average"));
-			Result result = RoadReader.getRoad(get);
-			return Math.abs(Double.parseDouble(Bytes.toString(bs))
-					- Bytes.toDouble(result.getValue(Bytes.toBytes("Summary"), Bytes.toBytes("Average"))));
 		}
 	}
 
@@ -69,7 +44,7 @@ public class UserWeightageCalculatorMapper {
 				i += val.get() * 10;
 				count++;
 			}
-			double ans = 10;
+			Double ans = 10.0;
 			if (count > 0) {
 				i /= count;
 				ans *= (100 - i) / 100;

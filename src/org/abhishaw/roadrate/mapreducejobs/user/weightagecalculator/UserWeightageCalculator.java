@@ -1,10 +1,10 @@
-package org.abhishaw.roadrate.mapreducejobs.userweightagecalculator;
+package org.abhishaw.roadrate.mapreducejobs.user.weightagecalculator;
 
 import java.io.IOException;
 
 import org.abhishaw.roadrate.dao.HbaseConfig;
-import org.abhishaw.roadrate.mapreducejobs.userweightagecalculator.UserWeightageCalculatorMapper.MyMapper;
-import org.abhishaw.roadrate.mapreducejobs.userweightagecalculator.UserWeightageCalculatorMapper.MyTableReducer;
+import org.abhishaw.roadrate.mapreducejobs.user.weightagecalculator.UserWeightageCalculatorMapper.MyMapper;
+import org.abhishaw.roadrate.mapreducejobs.user.weightagecalculator.UserWeightageCalculatorMapper.MyTableReducer;
 import org.apache.hadoop.hbase.client.Scan;
 import org.apache.hadoop.hbase.mapreduce.TableMapReduceUtil;
 import org.apache.hadoop.io.DoubleWritable;

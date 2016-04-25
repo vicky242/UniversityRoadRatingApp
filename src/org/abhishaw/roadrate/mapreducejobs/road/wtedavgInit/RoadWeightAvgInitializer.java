@@ -1,20 +1,22 @@
-package org.abhishaw.roadrate.mapreducejobs.roadavgcalculator;
+package org.abhishaw.roadrate.mapreducejobs.road.wtedavgInit;
 
 import java.io.IOException;
 
 import org.abhishaw.roadrate.dao.HbaseConfig;
-import org.abhishaw.roadrate.mapreducejobs.roadavgcalculator.RoadAverageCalculatorMapper.MyMapper;
+import org.abhishaw.roadrate.mapreducejobs.road.wtedavgInit.RoadWeightAvgInitializerMapper.MyMapper;
 import org.apache.hadoop.hbase.client.Scan;
 import org.apache.hadoop.hbase.mapreduce.TableMapReduceUtil;
 import org.apache.hadoop.mapreduce.Job;
 
-public class RoadAverageCalculator {
-
+public class RoadWeightAvgInitializer {
 	@SuppressWarnings("deprecation")
 	public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException {
-		Job job = new Job(HbaseConfig.getHbaseConfiguration(), "ExampleSummary");
-		job.setJarByClass(RoadAverageCalculatorMapper.class); // class that contains mapper and
-												// reducer
+
+		Job job = new Job(HbaseConfig.getHbaseConfiguration(), "RoadWeightAvgInitializer");
+		job.setJarByClass(RoadWeightAvgInitializerMapper.class); // class that
+																// contains
+																// mapper and
+		// reducer
 
 		Scan scan = new Scan();
 		scan.setCaching(500); // 1 is the default in Scan, which will be bad for
@@ -33,10 +35,10 @@ public class RoadAverageCalculator {
 				job);
 		job.setNumReduceTasks(0); // at least one, adjust as required
 
+		System.out.println("Abhishekh");
 		boolean b = job.waitForCompletion(true);
 		if (!b) {
 			throw new IOException("error with job!");
 		}
 	}
-
 }
