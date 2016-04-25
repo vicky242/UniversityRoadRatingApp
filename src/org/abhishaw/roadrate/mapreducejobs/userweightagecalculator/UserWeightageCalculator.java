@@ -4,8 +4,11 @@ import java.io.IOException;
 
 import org.abhishaw.roadrate.dao.HbaseConfig;
 import org.abhishaw.roadrate.mapreducejobs.userweightagecalculator.UserWeightageCalculatorMapper.MyMapper;
+import org.abhishaw.roadrate.mapreducejobs.userweightagecalculator.UserWeightageCalculatorMapper.MyTableReducer;
 import org.apache.hadoop.hbase.client.Scan;
 import org.apache.hadoop.hbase.mapreduce.TableMapReduceUtil;
+import org.apache.hadoop.io.DoubleWritable;
+import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 
 public class UserWeightageCalculator {
@@ -24,22 +27,21 @@ public class UserWeightageCalculator {
 		scan.setCacheBlocks(false); // don't set to true for MR jobs
 		// set other scan attrs
 
-		TableMapReduceUtil.initTableMapperJob("user", // input table
+		TableMapReduceUtil.initTableMapperJob("road", // input table
 				scan, // Scan instance to control CF and attribute selection
 				MyMapper.class, // mapper class
-				null, // mapper output key
-				null, // mapper output value
+				Text.class, // mapper output key
+				DoubleWritable.class, // mapper output value
 				job);
 		TableMapReduceUtil.initTableReducerJob("user", // output table
-				null, // reducer class
+				MyTableReducer.class, // reducer class
 				job);
-		job.setNumReduceTasks(0); // at least one, adjust as required
+		job.setNumReduceTasks(1); // at least one, adjust as required
 
-		System.out.println("Abshishekh");
+		System.out.println("Abhishekh");
 		boolean b = job.waitForCompletion(true);
 		if (!b) {
 			throw new IOException("error with job!");
 		}
-
 	}
 }

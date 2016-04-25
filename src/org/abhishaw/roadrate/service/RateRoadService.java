@@ -53,7 +53,6 @@ public class RateRoadService implements ServiceInterface {
 		sum += Integer.parseInt(rating);
 		count += 1;
 		Put putIntoRoad = new Put(Bytes.toBytes(roadId));
-		System.out.println(sum + ", " + count);
 		putIntoRoad.addColumn(Bytes.toBytes("UserRating"), Bytes.toBytes(userId), Bytes.toBytes(rating));
 		putIntoRoad.addColumn(Bytes.toBytes("Summary"), Bytes.toBytes("Count"), Bytes.toBytes(count.toString()));
 		putIntoRoad.addColumn(Bytes.toBytes("Summary"), Bytes.toBytes("Sum"), Bytes.toBytes(sum.toString()));

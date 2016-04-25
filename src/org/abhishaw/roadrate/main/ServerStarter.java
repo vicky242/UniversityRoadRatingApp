@@ -6,7 +6,7 @@ import java.net.Socket;
 
 public class ServerStarter {
 	//private static final Logger logger = LogManager.getLogger(ServerStarter.class.getName());
-	final private int portNumber = 5555;
+	final private int portNumber = 5001;
 	private ServerSocket serverSocket;
 
 	private ServerStarter() throws IOException {
