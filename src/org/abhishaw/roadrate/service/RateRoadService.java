@@ -22,6 +22,7 @@ public class RateRoadService implements ServiceInterface {
 		String userId = jsonObject.getString("UserId");
 		String roadId = jsonObject.getString("RoadId");
 		String rating = jsonObject.getString("Rating");
+		if (Integer.parseInt(rating)>=0 && Integer.parseInt(rating)<=10){
 
 		Get getFromUser = new Get(Bytes.toBytes(userId));
 		getFromUser.addColumn(Bytes.toBytes(UserTableConstants.ColumnFamily.RATING), Bytes.toBytes(roadId));
@@ -60,5 +61,10 @@ public class RateRoadService implements ServiceInterface {
 		RoadWriter.insert(putIntoRoad);
 		JsonObject reply = Json.createObjectBuilder().add("RequestReply", "Successful").build();
 		return reply;
+		}
+		else{
+			JsonObject reply = Json.createObjectBuilder().add("RequestReply", "Please Input Rating Between 0 to 10.").build();
+			return reply;
+		}
 	}
 }
