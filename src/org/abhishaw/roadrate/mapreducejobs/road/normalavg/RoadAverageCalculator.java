@@ -19,16 +19,20 @@ public class RoadAverageCalculator {
 		@SuppressWarnings("deprecation")
 		public void map(ImmutableBytesWritable row, Result value, Context context)
 				throws IOException, InterruptedException {
+			Put put = new Put(row.get());
 			int count = 0;
 			Double sum = 0.0;
+			Integer sum2 = 0;
 			NavigableMap<byte[], byte[]> nm = value.getFamilyMap(Bytes.toBytes("UserRating"));
 			for (byte[] key : nm.keySet()) {
 				count++;
 				sum += Double.parseDouble(Bytes.toString(nm.get(key)));
+				sum2 += Integer.parseInt(Bytes.toString(nm.get(key))); 
 			}
+			put.add(Bytes.toBytes("Summary"), Bytes.toBytes("Sum"), Bytes.toBytes(Integer.toString(sum2)));
+			put.add(Bytes.toBytes("Summary"), Bytes.toBytes("Count"), Bytes.toBytes(Integer.toString(count)));
 			if (count > 0)
 				sum /= count;
-			Put put = new Put(row.get());
 			put.add(Bytes.toBytes("Summary"), Bytes.toBytes("Average"), Bytes.toBytes(sum));
 			context.write(row, put);
 		}
@@ -37,27 +41,16 @@ public class RoadAverageCalculator {
 	@SuppressWarnings("deprecation")
 	public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException {
 		Job job = new Job(HbaseConfig.getHbaseConfiguration(), "RoadAverageCalculator");
-		job.setJarByClass(RoadAverageCalculator.class); // class that
-																// contains
-																// mapper and
-		// reducer
+		job.setJarByClass(RoadAverageCalculator.class);
 
 		Scan scan = new Scan();
-		scan.setCaching(500); // 1 is the default in Scan, which will be bad for
-								// MapReduce jobs
-		scan.setCacheBlocks(false); // don't set to true for MR jobs
-		// set other scan attrs
+		scan.setCaching(500);
 
-		TableMapReduceUtil.initTableMapperJob("road", // input table
-				scan, // Scan instance to control CF and attribute selection
-				MyMapper.class, // mapper class
-				null, // mapper output key
-				null, // mapper output value
-				job);
-		TableMapReduceUtil.initTableReducerJob("road", // output table
-				null, // reducer class
-				job);
-		job.setNumReduceTasks(0); // at least one, adjust as required
+		scan.setCacheBlocks(false);
+
+		TableMapReduceUtil.initTableMapperJob("road", scan, MyMapper.class, null, null, job);
+		TableMapReduceUtil.initTableReducerJob("road", null, job);
+		job.setNumReduceTasks(0);
 
 		boolean b = job.waitForCompletion(true);
 		if (!b) {

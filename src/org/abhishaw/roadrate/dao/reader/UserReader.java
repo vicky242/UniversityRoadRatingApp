@@ -14,7 +14,6 @@ public class UserReader {
 		Configuration configuration = HbaseConfig.getHbaseConfiguration();
 		@SuppressWarnings("deprecation")
 		HTable table = new HTable(configuration, UserTableConstants.TABLENAME);
-		// Reading the data
 		Result result = table.get(get);
 		table.close();
 		return result;

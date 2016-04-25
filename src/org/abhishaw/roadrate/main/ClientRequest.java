@@ -21,13 +21,11 @@ public class ClientRequest implements Runnable {
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
 		System.out.println("One request came");
 		JsonReader jsRdr;
 		try {
 			jsRdr = Json.createReader(clientSocket.getInputStream());
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return;
 		}
@@ -46,13 +44,11 @@ public class ClientRequest implements Runnable {
 			JsonWriter jsonWriter = Json.createWriter(clientSocket.getOutputStream());
 			jsonWriter.writeObject(reply);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		try {
 			clientSocket.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

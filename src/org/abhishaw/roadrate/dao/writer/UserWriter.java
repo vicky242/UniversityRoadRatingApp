@@ -12,7 +12,6 @@ public class UserWriter {
 	@SuppressWarnings("deprecation")
 	public static void insert(Put put) throws IOException {
 		Configuration configuration = HbaseConfig.getHbaseConfiguration();
-		// Instantiating HTable class
 		HTable hTable = new HTable(configuration, UserTableConstants.TABLENAME);
 		hTable.put(put);
 		hTable.close();

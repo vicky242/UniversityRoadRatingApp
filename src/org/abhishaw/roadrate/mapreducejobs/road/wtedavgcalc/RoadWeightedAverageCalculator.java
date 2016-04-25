@@ -31,7 +31,6 @@ public class RoadWeightedAverageCalculator {
 									* Double.parseDouble(Bytes.toString(nm.get(key))) / 10));
 				}
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -63,28 +62,14 @@ public class RoadWeightedAverageCalculator {
 	public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException {
 
 		Job job = new Job(HbaseConfig.getHbaseConfiguration(), "RoadWeightedAverageCalculator");
-		job.setJarByClass(RoadWeightedAverageCalculator.class); // class
-																// that
-		// contains
-		// mapper and
-		// reducer
-
+		job.setJarByClass(RoadWeightedAverageCalculator.class);
 		Scan scan = new Scan();
-		scan.setCaching(500); // 1 is the default in Scan, which will be bad for
-								// MapReduce jobs
-		scan.setCacheBlocks(false); // don't set to true for MR jobs
-		// set other scan attrs
+		scan.setCaching(500);
+		scan.setCacheBlocks(false);
 
-		TableMapReduceUtil.initTableMapperJob("user", // input table
-				scan, // Scan instance to control CF and attribute selection
-				MyMapper.class, // mapper class
-				Text.class, // mapper output key
-				DoubleWritable.class, // mapper output value
-				job);
-		TableMapReduceUtil.initTableReducerJob("road", // output table
-				MyTableReducer.class, // reducer class
-				job);
-		job.setNumReduceTasks(1); // at least one, adjust as required
+		TableMapReduceUtil.initTableMapperJob("user", scan, MyMapper.class, Text.class, DoubleWritable.class, job);
+		TableMapReduceUtil.initTableReducerJob("road", MyTableReducer.class, job);
+		job.setNumReduceTasks(1);
 		boolean b = job.waitForCompletion(true);
 		if (!b) {
 			throw new IOException("error with job!");

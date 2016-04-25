@@ -1,4 +1,4 @@
-package org.abhishaw.roadrate.mapreducejobs.road.sorterbyavg;
+package org.abhishaw.roadrate.mapreducejobs.user.sortedbywt;
 
 import java.io.IOException;
 
@@ -17,17 +17,16 @@ import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
-public class RoadSortedToFile {
+public class UserSortedToAFile {
 
-	public static class RoadsMapper extends TableMapper<DoubleWritable, Text> {
+	public static class MyMapper extends TableMapper<DoubleWritable, Text> {
 
 		public void map(ImmutableBytesWritable row, Result value, Context context)
 				throws IOException, InterruptedException {
 			Text text = new Text();
 			text.set(Bytes.toString(row.get()));
-			context.write(
-					new DoubleWritable(-Bytes
-							.toDouble(value.getValue(Bytes.toBytes("Summary"), Bytes.toBytes("WeightedAverage")))),
+			context.write(new DoubleWritable(
+					-Bytes.toDouble(value.getValue(Bytes.toBytes("PersonalInformation"), Bytes.toBytes("Weightage")))),
 					text);
 		}
 	}
@@ -46,15 +45,15 @@ public class RoadSortedToFile {
 		Configuration config = HBaseConfiguration.create();
 		@SuppressWarnings("deprecation")
 		Job job = new Job(config);
-		job.setJarByClass(RoadSortedToFile.class);
+		job.setJarByClass(UserSortedToAFile.class);
+
 		Scan scan = new Scan();
 		scan.setCaching(500);
 		scan.setCacheBlocks(false);
-
-		TableMapReduceUtil.initTableMapperJob("road", scan, RoadsMapper.class, DoubleWritable.class, Text.class, job);
+		TableMapReduceUtil.initTableMapperJob("user", scan, MyMapper.class, DoubleWritable.class, Text.class, job);
 		job.setReducerClass(MyReducer.class);
 		job.setNumReduceTasks(1);
-		FileOutputFormat.setOutputPath(job, new Path("/tmp/mr/myRoadSummary"));
+		FileOutputFormat.setOutputPath(job, new Path("/tmp/mr/myUserSummary"));
 		boolean b = job.waitForCompletion(true);
 		if (!b) {
 			throw new IOException("error with job!");

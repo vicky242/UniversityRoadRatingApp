@@ -12,7 +12,7 @@ public class RoadReader {
 	public static Result getRoad(Get get) throws IOException {
 		Configuration configuration = HbaseConfig.getHbaseConfiguration();
 		@SuppressWarnings("deprecation")
-		HTable table = new HTable(configuration, "road"); // Reading the data
+		HTable table = new HTable(configuration, "road");
 		Result result = table.get(get);
 		table.close();
 		return result;

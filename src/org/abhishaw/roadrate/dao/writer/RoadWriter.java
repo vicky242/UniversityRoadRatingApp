@@ -11,7 +11,6 @@ public class RoadWriter {
 	@SuppressWarnings("deprecation")
 	public static void insert(Put put) throws IOException {
 		Configuration configuration = HbaseConfig.getHbaseConfiguration();
-		// Instantiating HTable class
 		HTable hTable = new HTable(configuration, "road");
 
 		hTable.put(put);
